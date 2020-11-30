@@ -5,10 +5,13 @@ const chalk = require("chalk")
 
 const dataset = []
 
+const args = process.argv.slice(2)
+const ref = (args.length > 0) ? args[0] : "master" 
+
 ;(async () => {
 
 	console.log("Fetching addons list...")
-	let addons = await axios.get("https://raw.githubusercontent.com/ScratchAddons/ScratchAddons/master/addons/addons.json").then(response => response.data)
+	let addons = await axios.get(`https://raw.githubusercontent.com/ScratchAddons/ScratchAddons/${ref}/addons/addons.json`).then(response => response.data)
 	addons = addons.filter(addon => !addon.startsWith("//"))
 
 	console.log(`Found ${chalk.greenBright(addons.length)} addons.`)
@@ -18,7 +21,7 @@ const dataset = []
 
 		console.log(`Fetcing manifest of ${chalk.inverse(addon)}...`)
 
-		const manifest = await axios.get(`https://raw.githubusercontent.com/ScratchAddons/ScratchAddons/master/addons/${addon}/addon.json`).then(response => response.data)
+		const manifest = await axios.get(`https://raw.githubusercontent.com/ScratchAddons/ScratchAddons/${ref}/addons/${addon}/addon.json`).then(response => response.data)
 
 		console.log(`Manifest of ${chalk.inverse(addon)} fetched. Pushing...`)
 
