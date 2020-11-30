@@ -5,23 +5,23 @@ const chalk = require("chalk")
 
 const dataset = []
 
+const args = process.argv.slice(2)
+const ref = (args.length > 0) ? args[0] : "master" 
+
 ;(async () => {
 
 	console.log("Fetching addons list...")
-
-	let addons = await axios.get("https://raw.githubusercontent.com/ScratchAddons/ScratchAddons/master/addons/addons.json").then(response => response.data)
-
+	let addons = await axios.get(`https://raw.githubusercontent.com/ScratchAddons/ScratchAddons/${ref}/addons/addons.json`).then(response => response.data)
 	addons = addons.filter(addon => !addon.startsWith("//"))
 
 	console.log(`Found ${chalk.greenBright(addons.length)} addons.`)
-
 	console.log("Start fetching and pushing all manifests...")
 
 	await Promise.all(addons.map(async addon => {
 
 		console.log(`Fetcing manifest of ${chalk.inverse(addon)}...`)
 
-		const manifest = await axios.get(`https://raw.githubusercontent.com/ScratchAddons/ScratchAddons/master/addons/${addon}/addon.json`).then(response => response.data)
+		const manifest = await axios.get(`https://raw.githubusercontent.com/ScratchAddons/ScratchAddons/${ref}/addons/${addon}/addon.json`).then(response => response.data)
 
 		console.log(`Manifest of ${chalk.inverse(addon)} fetched. Pushing...`)
 
@@ -43,7 +43,7 @@ const dataset = []
 	console.log("Sorting...")	
 	dataset.sort((a, b) => a.id.localeCompare(b.id))
 	console.log("Writing file...")
-	fs.outputFileSync("website/site/_data/addons.json", prettier.format(JSON.stringify(dataset), { parser: "json", useTabs: true }))
+	fs.outputFileSync("site/_data/addons.json", prettier.format(JSON.stringify(dataset), { parser: "json", useTabs: true }))
 	console.log("All done!")
 
 	// await addons.forEach(async addon => {
