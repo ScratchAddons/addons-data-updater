@@ -8,13 +8,10 @@ const dataset = []
 ;(async () => {
 
 	console.log("Fetching addons list...")
-
 	let addons = await axios.get("https://raw.githubusercontent.com/ScratchAddons/ScratchAddons/master/addons/addons.json").then(response => response.data)
-
 	addons = addons.filter(addon => !addon.startsWith("//"))
 
 	console.log(`Found ${chalk.greenBright(addons.length)} addons.`)
-
 	console.log("Start fetching and pushing all manifests...")
 
 	await Promise.all(addons.map(async addon => {
@@ -43,7 +40,7 @@ const dataset = []
 	console.log("Sorting...")	
 	dataset.sort((a, b) => a.id.localeCompare(b.id))
 	console.log("Writing file...")
-	fs.outputFileSync("website/site/_data/addons.json", prettier.format(JSON.stringify(dataset), { parser: "json", useTabs: true }))
+	fs.outputFileSync("site/_data/addons.json", prettier.format(JSON.stringify(dataset), { parser: "json", useTabs: true }))
 	console.log("All done!")
 
 	// await addons.forEach(async addon => {
