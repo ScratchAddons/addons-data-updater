@@ -43,7 +43,7 @@ const ref = (args.length > 0) ? args[0] : "master"
 	console.log("Sorting...")	
 	dataset.sort((a, b) => a.id.localeCompare(b.id))
 	console.log("Writing file...")
-	fs.outputFileSync("site/_data/addons.json", prettier.format(JSON.stringify(dataset), { parser: "json", useTabs: true }))
+	fs.outputFileSync("data/addons.json", prettier.format(JSON.stringify(dataset), { parser: "json", useTabs: true }))
 	console.log("All done!")
 
 	// await addons.forEach(async addon => {
